@@ -15,6 +15,7 @@ const deleteBtn = document.querySelector("#delete"); //delete button
 
 numBtn.forEach((btn) =>{ //passes value of each value to setOperand
     btn.addEventListener("click", () => {
+        if(!btn.textContent.trim()) return;
         if (operator === null){
             setOperand1(btn.textContent);
         } else {
@@ -32,8 +33,11 @@ clearBtn.addEventListener("click", clearScreen);
 deleteBtn.addEventListener("click", deleteDigit)
 
 //setters
-function setOperand1(num){
-    if(operand1 === 0 ){
+function setOperand1(num) {
+    if(result !== null){
+        operand1 = num;
+        result = null;
+    } else if(operand1 === 0 ){
         operand1 = num;
     } else{
         operand1 = parseFloat(operand1.toString() + num);
@@ -82,8 +86,8 @@ function clearScreen(){
     operand2 = null;
     operator = null;
     result = null;
-    currentNumber.textContent = '0';
-    previousNumber.textContent = '';
+    currentNumber.textContent = "0";
+    previousNumber.textContent = "";
 }
 
 /* delete button and the function to delete last digit from current number */
@@ -94,7 +98,7 @@ function deleteDigit(){
 
     if (operator === null){
         operand1 = Number(currentNumber.textContent);
-        result = operand1;
+        result = null;
     } else {
         operand2 = Number(currentNumber.textContent);
     }
@@ -125,9 +129,10 @@ function getResult(operator, a, b){
             if (b === 0){
                 currentNumber.textContent = "Error";
                 alert("You can't divide by zero!");
-                return null
+                clearScreen();
+                return 0;
             }
             return divide(a,b);
-        default: return null;
+        default: return 0;
     }
 }
