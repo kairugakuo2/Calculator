@@ -45,16 +45,18 @@ function setOperand2(num){
     if(operand2 === null){
         operand2 = num;
     } else {
-        operand2 = parseFLoat(operand2.toString() + num);
+        operand2 = parseFloat(operand2.toString() + num);
     }
     currentNumber.textContent = operand2;
 }
 
 function setOperation(operation){
-    operator = operation;
-    if (operand2 !== null) {
+    if (operator !== null && operand2 !== null) {
         evaluate();
-    } else if (result !== null){
+    }
+    operator = operation;
+
+    if (result !== null){
         previousNumber.textContent = result + " " + operator;
         operand1 = result;
         operand2 = null;
