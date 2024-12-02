@@ -1,8 +1,9 @@
 //global variables
-let operand1 = null;
+let operand1 = 0;
 let operand2 = null;
 let operator = null;
 let result = null;
+
 let currentNumber = document.querySelector(".currentScreen");
 let previousNumber = document.querySelector(".previousScreen");
 
@@ -28,30 +29,32 @@ opBtn.forEach((btn) =>{ //passes value of each value to setOperand
 });
 eqBtn.addEventListener("click", evaluate);
 clearBtn.addEventListener("click", clearScreen);
-// deleteBtn
+deleteBtn.addEventListener("click", deleteDigit)
 
 //setters
 function setOperand1(num){
     if(operand1 === 0 ){
         operand1 = num;
-        currentNumber.textContent = operand1;
     } else{
-        operand1 += num;
-        currentNumber.textContent = operand1;
+        operand1 = parseFloat(operand1.toString() + num);
     }
+    currentNumber.textContent = operand1;
 }
+
 function setOperand2(num){
     if(operand2 === null){
         operand2 = num;
-        currentNumber.textContent = operand2;
     } else {
-        operand2 += num;
-        currentNumber.textContent = operand2;
+        operand2 = parseFLoat(operand2.toString() + num);
     }
+    currentNumber.textContent = operand2;
 }
+
 function setOperation(operation){
     operator = operation;
-    if (result !== null){
+    if (operand2 !== null) {
+        evaluate();
+    } else if (result !== null){
         previousNumber.textContent = result + " " + operator;
         operand1 = result;
         operand2 = null;
@@ -60,10 +63,15 @@ function setOperation(operation){
     }
 }
 function evaluate(){
+    if (operator === null || operand2 === null) return
     previousNumber.textContent = operand1 + " " + operator + " " + operand2 + " =";
     result = getResult(operator, operand1, operand2);
-    if (result === null) clearScreen()
+    if (result === null) clearScreen();
     else currentNumber.textContent = result;
+
+    operand1 = result;
+    operand2 = null;
+    operator = null;
 }
 
 /* clear button and the function to clear screen when presses */
@@ -73,11 +81,22 @@ function clearScreen(){
     operator = null;
     result = null;
     currentNumber.textContent = '0';
-    previousNumber.textContent = '0';
+    previousNumber.textContent = '';
 }
 
 /* delete button and the function to delete last digit from current number */
-function deleteDigit(){}
+function deleteDigit(){
+    let temp = currentNumber.textContent.toString();
+    currentNumber.textContent = temp.slice(0,-1) || "0";
+    //update operand1, operand2, operator
+
+    if (operator === null){
+        operand1 = Number(currentNumber.textContent);
+        result = operand1;
+    } else {
+        operand2 = Number(currentNumber.textContent);
+    }
+}
 
 /////// Math Section ////////
 
@@ -93,24 +112,20 @@ function multiply(a,b){
 function divide(a,b){
     return a / b;
 }
-
 function getResult(operator, a, b){
     a = Number(a);
     b = Number(b)
     switch(operator){
-        case '+':
-            return add(a,b);
-        case '-':
-            return subtract(a,b);
-        case 'x':
-            return multiply(a,b);
+        case '+':return add(a,b);
+        case '-':return subtract(a,b);
+        case 'x':return multiply(a,b);
         case '÷':
             if (b === 0){
+                currentNumber.textContent = "Error";
                 alert("You can't divide by zero!");
                 return null
             }
-            else return divide(a,b);
-        default:
-            return null
+            return divide(a,b);
+        default: return null;
     }
 }
