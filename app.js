@@ -118,21 +118,28 @@ function multiply(a,b){
 function divide(a,b){
     return a / b;
 }
+function roundResult(value, decimals = 5){ //adjust for decimal accuracy
+    if(value === null) return null //for divide by zero
+    return Math.round(value * Math.pow(10,decimals)) / Math.pow(10,decimals);
+}
 function getResult(operator, a, b){
     a = Number(a);
     b = Number(b)
+
+    let result;
     switch(operator){
-        case '+':return add(a,b);
-        case '-':return subtract(a,b);
-        case 'x':return multiply(a,b);
+        case '+':result= add(a,b); break;
+        case '-':result = subtract(a,b); break;
+        case 'x':result = multiply(a,b); break;
         case '÷':
             if (b === 0){
-                currentNumber.textContent = "Error";
-                alert("You can't divide by zero!");
+                alert("Error: You can't divide by zero!");
                 clearScreen();
                 return 0;
             }
-            return divide(a,b);
+            result = divide(a,b);
+            break;
         default: return 0;
     }
+    return roundResult(result);
 }
