@@ -12,6 +12,7 @@ const opBtn = document.querySelectorAll(".operator");
 const eqBtn = document.querySelector(".equals");
 const clearBtn = document.querySelector("#clear");
 const deleteBtn = document.querySelector("#delete"); //delete button
+const decimalBtn = document.querySelector(".decimal");
 
 numBtn.forEach((btn) =>{ //passes value of each value to setOperand
     btn.addEventListener("click", () => {
@@ -31,6 +32,7 @@ opBtn.forEach((btn) =>{ //passes value of each value to setOperand
 eqBtn.addEventListener("click", evaluate);
 clearBtn.addEventListener("click", clearScreen);
 deleteBtn.addEventListener("click", deleteDigit)
+decimalBtn.addEventListener("click", addDecimal);
 
 //setters
 function setOperand1(num) {
@@ -101,6 +103,22 @@ function deleteDigit(){
         result = null;
     } else {
         operand2 = Number(currentNumber.textContent);
+    }
+}
+
+function addDecimal(){
+    if (operator === null) {
+        if (!operand1.toString().includes(".")){ // add decimal if not already present
+            operand1 = operand1.toString() + ".";
+            currentNumber.textContent = operand1;
+        }
+    } else {
+        if(operand2 === null){
+            operand2 = "0."
+        } else if (!operand2.toString().includes(".")) {
+            operand2 = operand2.toString() + ".";
+        }
+        currentNumber.textContent = operand2;
     }
 }
 
