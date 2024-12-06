@@ -29,6 +29,9 @@ The **Scientific Calculator Project** is a web-based calculator that supports bo
 
 ---
 
+<img width="443" alt="Screenshot 2024-12-05 at 10 09 28 PM" src="https://github.com/user-attachments/assets/f8429501-6a81-45da-ace7-bd49317c7fd9">
+
+---
 ## **How to Use**
 1. Clone the repository:
    ```bash
