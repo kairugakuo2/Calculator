@@ -122,7 +122,7 @@ function addDecimal(){
     }
 }
 
-/////// Math Section ////////
+/////// Standard Math Section ////////
 
 function add(a,b){
     return a + b;
@@ -162,10 +162,82 @@ function getResult(operator, a, b){
     return roundResult(result);
 }
 
-/// Scientific calculator display //
+/// Scientific calculator  //
 const toggleScientificBtn = document.querySelector("#toggle-scientific");
 const scientificButtons = document.querySelector(".scientific-buttons");
 
 toggleScientificBtn.addEventListener("click", () => {
     scientificButtons.classList.toggle("hidden");
 });
+
+scientificButtons.querySelectorAll("button").forEach( (btn) => {
+    btn.addEventListener("click", () => {
+        const func = btn.dataset.func;
+        getScientificResult(func);
+    })
+})
+
+function getScientificResult(func){
+    let value = parseFloat(currentNumber.textContent) || 0;
+    switch(func){
+        case "sin":
+            value = Math.sin(toRadians(value));
+            break;
+        case "cos":
+            value = Math.cos(toRadians(value));
+            break;
+        case "tan":
+            value = Math.tan(toRadians(value));
+            break;
+        case "sqrt":
+            value = Math.sqrt(value);
+            break;
+        case "cbrt": //cube root
+            value = Math.cbrt(value);
+            break;
+        case "pow":
+            const exponent = prompt("Enter exponent: ");
+            if(exponent === null || isNaN(exponent)) {
+                alert("Invalid input for exponent");
+                return;
+            }
+            value = Math.pow (value, parseFloat(exponent));
+            break;
+        case "tenPow":
+            value = Math.pow (10 , value);
+            break;
+        case "ln":
+            value = Math.log(value);
+            break;
+        case "log":
+            value = Math.log10(value);
+            break;
+        case "factorial":
+            value = factorial(value);
+            break;
+        case "pi":
+            value = Math.PI;
+            break;
+        case "e":
+            value = Math.E;
+            break;
+        default:
+            value = value;
+        }
+    if(operator === null){
+        result = value;
+    } else {
+        operand2 = value;
+    }
+    currentNumber.textContent = roundResult(value);
+}
+
+function factorial(number){ //recursive function to find factorial
+    if (number < 0) return NaN;
+    if (number === 0 || number === 1) return 1;
+
+    return number * factorial(number - 1);
+}
+function toRadians(degrees){
+    return degrees * (Math.PI / 180);
+}
