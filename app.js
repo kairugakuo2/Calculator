@@ -161,3 +161,11 @@ function getResult(operator, a, b){
     }
     return roundResult(result);
 }
+
+/// Scientific calculator display //
+const toggleScientificBtn = document.querySelector("#toggle-scientific");
+const scientificButtons = document.querySelector(".scientific-buttons");
+
+toggleScientificBtn.addEventListener("click", () => {
+    scientificButtons.classList.toggle("hidden");
+});
