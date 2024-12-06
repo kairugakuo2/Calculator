@@ -11,7 +11,7 @@ The **Scientific Calculator Project** is a web-based calculator that supports bo
 - **Scientific Functions**:
   - Trigonometric: `sin`, `cos`, `tan`.
   - Logarithmic: `log10`, `ln`.
-  - Exponentiation: `x^y`.
+  - Exponentiation: `x^y` , `10^x`.
   - Factorial: `n!`.
   - Square Root: `√x`, Cube Root: `∛x`.
   - Constants: `π`, `e`.
