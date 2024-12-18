@@ -124,7 +124,11 @@ button:hover{
     filter: brightness(90);
 }
 
-
+.transcription {
+    margin: 10px;
+    font-size: 18px;
+    text-align: center;
+}
 
 
 
