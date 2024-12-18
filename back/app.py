@@ -1,10 +1,12 @@
 # import google speech library
 from google.cloud import speech
 import io
+import os
 
+credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 #function to transcribe audio using google speech-to-text API
 def transcribe_audio(file_path):
-    client = speech.SpeechClient.from_service_account_json("calculatorvoiceinput-73479d8fe297.json")
+    client = speech.SpeechClient.from_service_account_json(credentials_path)
     #read audio file
     with io.open(file_path,"rb") as audio_file:
         content = audio_file.read()
@@ -26,4 +28,4 @@ def transcribe_audio(file_path):
         return result.alternatives[0].transcript
 
 if __name__ == "__main__":
-    print(transcribe_audio("4+4_converted.wav"))
+    print(transcribe_audio("../4+4_converted.wav"))
