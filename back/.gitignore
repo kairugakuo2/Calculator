@@ -1,10 +1,27 @@
-# Default ignored files
+# Ignore Python cache and virtual environments
+__pycache__/
+*.pyc
+*.pyo
+venv/
+
+# Ignore IntelliJ IDEA project files
+/.idea/
 /shelf/
-/.idea/workspace.xml
-# Editor-based HTTP Client requests
 /httpRequests/
-# Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
-*.json
+workspace.xml
+
+# Ignore sensitive files
+gcloud_credentials/       # Folder for Google Cloud credentials
+*.json                    # Ignore all JSON files (adjust if needed)
+
+# Ignore temporary files
+*.wav                     # Ignore audio files
+temp_audio.wav            # Specifically ignore temporary audio
+
+# Optional: Ignore logs and debug files
+*.log
+debug.log
+
 
