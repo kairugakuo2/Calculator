@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8"></meta>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
-        <title>Calculator</title>
+        <title>Scientific Calculator</title>
         <link rel="stylesheet" href="styles.css"></link>
 
     </head>
@@ -16,15 +16,14 @@
                 <div class="currentScreen">0</div>
             </div>
 
+            <!-- Transcript section -->
             <div class="transcription">
                 <p class="previousScreen">You said: </p>
                 <p class="currentScreen">Result: </p>
             </div>
 
-
             <!--  button to access scientific functions --->
             <button id ="toggle-scientific">Scientific</button>
-
             <!-- scientific buttons --->
             <div class="scientific-buttons hidden">
                 <button class="scientific" data-func="sin">sin</button>
@@ -39,7 +38,6 @@
                 <button class="scientific" data-func="e">e</button>
                 <button class="scientific" data-func="cbrt">∛</button>
                 <button class="scientific" data-func="tenPow">10<sup>x</sup></button>
-
             </div>
 
             <!-- standard buttons --->
@@ -65,9 +63,13 @@
                     <button class="shortBtn operator">+</button>
                 </div>
             </div>
+
+            <!-- Voice Input section -->
+            <div id="controls">
+                <button id="recordButton">Start Recording</button>
+                <p id="timer">Press the button to start recording.</p>
+            </div>
         </div>
-
-
 
         <script src="app.js"></script>
     </body>

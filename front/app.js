@@ -242,25 +242,35 @@ function toRadians(degrees){
     return degrees * (Math.PI / 180);
 }
 
-//speech to text implementation
+
+
+//speech to text implementation //
 
 //display transcript and result
 const updateUI = (transcription,result) => {
-    document.querySelector(".previousScreen").textContent = transcription;
-    document.querySelector(".currentScreen").textContent = result;
+    document.querySelector(".previousScreen").textContent = `You said: ${transcription}`
+    document.querySelector(".currentScreen").textContent = `Result: ${result}`
 };
 
 //process response from backend
-const handleAudioTranscript = (audioBlob) => {
+const handleAudioTranscription = (audioBlob) => {
+    console.log("Sending audio to backend");
     const formData = new FormData();
     formData.append("file", audioBlob, "audio.wav");
 
-    fetch("http://localhost:5000/transcribe", {
+    fetch("http://127.0.0.1:5000/transcribe", {
         method: "POST",
         body: formData,
     })
-        .then((response) => response.json())
+        .then((response) => {
+            if(!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`)
+            }
+            console.log("Received response from backend:", response);
+            return response.json()
+        })
         .then((data) => {
+            console.log("Parsed response JSON:", data);
             if (data.error) {
                 alert(data.error);
                 return;
@@ -271,20 +281,44 @@ const handleAudioTranscript = (audioBlob) => {
         })
         .catch((error) => {
             console.error("Error processing transcription:", error);
+            alert("Failed to process transcription. Please try again.");
         });
 };
 
 // record audio + send it to  backend
-const recordAudio = () => {
+const recordAudio = (duration = 5000) => {
+    console.log("Starting audio recording...");
+
+    //check if browswer supports
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        alert("Sorry, your browser doesn't support audio recording!")
+        return;
+    }
     const constraints = { audio: true };
+
     navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-        const mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder = new MediaRecorder(stream);
         mediaRecorder.start();
+        console.log("Recording started");
+        startTimer();
+
+        setTimeout(() => {
+            stopRecording();
+            console.log("Recording stopped automatically from being too long");
+        }, duration);
 
         mediaRecorder.ondataavailable = (e) => {
+            console.log("Audio data available", e.data);
             const audioBlob = e.data;
-            handleAudioTranscription(audioBlob);
+            handleAudioTranscription(audioBlob); //send to backend app.py
         };
+
+        mediaRecorder.onerror = (error) => {
+            console.error("MediaRecorder error:", error);
+        };
+    }).catch((err) => {
+        console.error("Error using the microphone", err);
+        alert("Could not access the microphone. Please check your permissions.");
     });
 };
 
@@ -296,7 +330,6 @@ let elapsedTime = 0;
 // Start the timer
 const startTimer = () => {
     elapsedTime = 0;
-    const timerDisplay = document.querySelector("#timer");
     timerDisplay.textContent = "Recording: 0s";
     timerInterval = setInterval(() => {
         elapsedTime++;
@@ -311,51 +344,33 @@ const stopTimer = () => {
     timerDisplay.textContent = "Recording stopped.";
 };
 
-// Start recording audio
-const startRecording = () => {
-    const constraints = { audio: true };
-    navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-        mediaRecorder = new MediaRecorder(stream);
-        mediaRecorder.start();
-        startTimer();
-
-        mediaRecorder.ondataavailable = (e) => {
-            const audioBlob = e.data;
-            handleAudioTranscription(audioBlob);
-        };
-    });
-};
-
 // Stop recording audio
 const stopRecording = () => {
     if (mediaRecorder && mediaRecorder.state === "recording") {
         mediaRecorder.stop();
+        console.log("Recording stopped.")
         stopTimer();
+    } else {
+        console.log("No active recording to stop.")
     }
 };
 
 // Toggle recording when the button is pressed
 let isRecording = false;
 const toggleRecording = () => {
-    const recordButton = document.querySelector("#recordButton");
     if (isRecording) {
         stopRecording();
         recordButton.textContent = "Start Recording";
     } else {
-        startRecording();
+        recordAudio();
         recordButton.textContent = "Stop Recording";
     }
     isRecording = !isRecording;
 };
 
-// Add the button and timer display to the UI
-const recordButton = document.createElement("button");
-recordButton.id = "recordButton";
-recordButton.textContent = "Start Recording";
-recordButton.addEventListener("click", toggleRecording);
-document.body.appendChild(recordButton);
+// use the button and timer display
+const recordButton = document.querySelector("#recordButton");
+const timerDisplay = document.querySelector("#timer");
 
-const timerDisplay = document.createElement("p");
-timerDisplay.id = "timer";
-timerDisplay.textContent = "Press the button to start recording.";
-document.body.appendChild(timerDisplay);
+document.querySelector("#recordButton").addEventListener("click", toggleRecording);
+
