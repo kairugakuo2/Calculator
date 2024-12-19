@@ -24,4 +24,12 @@ temp_audio.wav            # Specifically ignore temporary audio
 *.log
 debug.log
 
+#ignore virtual environement and other files
+venv
+.pyc
+__pycache__
+.log
+.DS_Store
+
+
 

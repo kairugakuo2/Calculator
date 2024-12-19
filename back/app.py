@@ -12,6 +12,11 @@ import tempfile
 app = Flask(__name__)
 CORS(app)
 
+@app.route('/')
+def index():
+    return "Welcome to the Calculator Backend API! Use the `/transcribe` endpoint for audio transcription."
+
+
 #get credentials from environemnt variable
 credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 
@@ -97,4 +102,4 @@ def transcribe():
             print(f"Error cleaning up temporary file: {cleanup_error}")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=8000, debug=True)
