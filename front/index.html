@@ -16,10 +16,15 @@
                 <div class="currentScreen">0</div>
             </div>
 
-            <!-- Transcript section -->
-            <div class="transcription">
-                <p class="previousScreen">You said: </p>
-                <p class="currentScreen">Result: </p>
+            <!-- Voice Input section -->
+            <button id ="toggle-voice">Use Voice</button>
+
+            <div class="voice-button hidden" id="controls">
+                <button id="recordButton">Start Recording</button>
+                <div>
+                    <p id="timer">Press the button to start recording.</p>
+                    <p id="hint">Hint: Say phrases like "what is 4 + 4".</p>
+                </div>
             </div>
 
             <!--  button to access scientific functions --->
@@ -64,13 +69,10 @@
                 </div>
             </div>
 
-            <!-- Voice Input section -->
-            <div id="controls">
-                <button id="recordButton">Start Recording</button>
-                <p id="timer">Press the button to start recording.</p>
-            </div>
+
         </div>
 
+        <footer>Created by Gakuo Kairu</footer>
         <script src="app.js"></script>
     </body>
 </html>

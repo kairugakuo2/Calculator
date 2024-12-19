@@ -3,6 +3,7 @@ let operand1 = 0;
 let operand2 = null;
 let operator = null;
 let result = null;
+let voiceCalled = false;
 
 let currentNumber = document.querySelector(".currentScreen");
 let previousNumber = document.querySelector(".previousScreen");
@@ -57,6 +58,12 @@ function setOperand2(num){
 }
 
 function setOperation(operation){
+    if (voiceCalled) { // if voice used, update operand 1
+        const str = currentNumber.textContent;
+        const numbersOnly = str.replace(/\D/g,"");
+        operand1 = parseFloat(numbersOnly);
+    }
+
     if (operator !== null && operand2 !== null) {
         evaluate();
     }
@@ -69,10 +76,14 @@ function setOperation(operation){
     } else {
         previousNumber.textContent = operand1 + " " + operator;
     }
+
+
 }
 function evaluate(){
-    if (operator === null || operand2 === null) return
+    if (operator === null || operand2 === null) return //if operator and operand 2 = null, can't perform calc
+
     previousNumber.textContent = operand1 + " " + operator + " " + operand2 + " =";
+
     result = getResult(operator, operand1, operand2);
     if (result === null) clearScreen();
     else currentNumber.textContent = result;
@@ -247,9 +258,13 @@ function toRadians(degrees){
 //speech to text implementation //
 
 //display transcript and result
-const updateUI = (transcription,result) => {
+const updateUI = (transcription, result) => {
+    clearScreen();
     document.querySelector(".previousScreen").textContent = `You said: ${transcription}`
     document.querySelector(".currentScreen").textContent = `Result: ${result}`
+    voiceCalled = true;
+
+    console.log(`${operand1}, ${operator} + ${operand2}`);
 };
 
 //process response from backend
@@ -374,3 +389,10 @@ const timerDisplay = document.querySelector("#timer");
 
 document.querySelector("#recordButton").addEventListener("click", toggleRecording);
 
+//toggle use voice to open drawer
+const toggleVoiceBtn = document.querySelector("#toggle-voice");
+const recordControls = document.querySelector("#controls");
+
+toggleVoiceBtn.addEventListener("click", () => {
+    recordControls.classList.toggle("hidden");
+});
